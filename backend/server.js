@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
-import connectDB from "../config/db.js";
+import connectDB from "./config/db.js";
 
 const PORT = process.env.PORT || 4000;
 const uri = process.env.MONGODB_URI;
