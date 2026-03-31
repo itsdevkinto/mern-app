@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  background-color: rgba(228, 224, 224, 0.554);
+  @apply bg-slate-200/55;
+}
+
+@theme {
+  --color-primary: var(--color-slate-800);
+  --color-secondary: var(--color-slate-200-55);
+  --color-accent: var(--color-blue-500);
 }
