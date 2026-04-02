@@ -1,9 +1,16 @@
 import mongoose from "mongoose";
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+};
 const Register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  if (!username || !email || !password) {
+  if (!name || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -13,17 +20,19 @@ const Register = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const user = await User.create({ username, email, password });
+    const user = await User.create({ name, email, password });
     const token = generateToken(user._id);
     return res.status(201).json({
       id: user._id,
-      username: user.username,
+      name: user.name,
       email: user.email,
       token,
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server error" });
+    return res
+      .status(500)
+      .json({ message: "Server burat error", error: error.message });
   }
 };
 
@@ -47,7 +56,7 @@ const Login = async (req, res) => {
     const token = generateToken(user._id);
     return res.status(200).json({
       id: user._id,
-      username: user.username,
+      name: user.name,
       email: user.email,
       token,
     });
@@ -57,10 +66,8 @@ const Login = async (req, res) => {
   }
 };
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+const userHome = async (req, res) => {
+  res.status(200).json(req.user);
 };
 
-export { Register };
+export { Register, Login, userHome, getProducts };
