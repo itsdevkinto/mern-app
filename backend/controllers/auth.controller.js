@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
@@ -70,4 +69,4 @@ const userHome = async (req, res) => {
   res.status(200).json(req.user);
 };
 
-export { Register, Login, userHome, getProducts };
+export { Register, Login, userHome };
