@@ -22,9 +22,11 @@ const Register = async (req, res) => {
     const user = await User.create({ name, email, password });
     const token = generateToken(user._id);
     return res.status(201).json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
       token,
     });
   } catch (error) {
@@ -54,9 +56,11 @@ const Login = async (req, res) => {
     }
     const token = generateToken(user._id);
     return res.status(200).json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
       token,
     });
   } catch (error) {
@@ -66,7 +70,7 @@ const Login = async (req, res) => {
 };
 
 const userHome = async (req, res) => {
-  res.status(200).json(req.user);
+  res.status(200).json({ user: req.user });
 };
 
 export { Register, Login, userHome };
