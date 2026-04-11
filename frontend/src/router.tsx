@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import Home from "./components/pages/Home.tsx";
 import {ErrorPage} from "./components/pages/ErrorPage.tsx";
 import LoginPage from "./components/pages/LoginPage.tsx";
+import RegisterPage from "./components/pages/RegisterPage.tsx";
 
 export const router = createBrowserRouter(
   
@@ -23,7 +24,7 @@ export const router = createBrowserRouter(
       },
       {
         path: "register",
-        element: <Home />,
+        element: <RegisterPage />,
       },
     ],
   },

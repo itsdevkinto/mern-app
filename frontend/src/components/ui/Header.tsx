@@ -1,14 +1,35 @@
-import { Link } from "react-router-dom";
+import { useAuth } from "@/AuthContext";
+import { Link, useOutletContext, useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const { user, setUser } = useAuth();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+
+    navigate("/");
+  };
+
   return (
-    <header className="sticky w-full top-0 bg-slate-800 text-white py-4 z-10">
-      <nav className="flex justify-between items-center px-6">
-        <Link to="/" className="font-bold">MERN Auth</Link>
-        <div className="flex items-center gap-4">
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
-        </div>
+    <header className="sticky top-0 z-10 w-full bg-slate-800 py-4 text-white">
+      <nav className="flex items-center justify-between px-6">
+        <Link to="/" className="font-bold">
+          MERN Auth
+        </Link>
+        {user ? (
+          <button onClick={handleLogout} className="rounded bg-red-500 p-4 py-2 text-white hover:bg-red-600">
+            Logout
+          </button>
+        ) : (
+          <>
+            <div className="flex items-center gap-4">
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
+            </div>
+          </>
+        )}
       </nav>
     </header>
   );

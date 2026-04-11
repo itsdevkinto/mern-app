@@ -1,23 +1,37 @@
+import type { AuthContextType } from "@/App";
+import { useOutletContext } from "react-router-dom";
+
 export default function Hero() {
+  const { error, user } = useOutletContext<AuthContextType>();
   return (
-    <div className="h-screen flex items-center justify-center -mt-15">
-      <div className="container mx-auto flex flex-col items-center rounded-xl bg-white drop-shadow-2xl w-3/4 max-w-md justify-center p-8">
-        <h1 className="text-3xl font-bold mb-4">Welcome</h1>
-        <p className="text-lg mb-4">Please login or register</p>
-        <div className="flex flex-col gap-2 *:w-full w-full justify-center">
-          <a
-            href="/login"
-            className="flex justify-center items-center bg-accent hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
-          >
-            Login
-          </a>
-          <a
-            href="/register"
-            className="flex justify-center items-center bg-accent hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Register
-          </a>
-        </div>
+    <div className="-mt-15 flex h-screen items-center justify-center">
+      <div className="container mx-auto flex w-3/4 max-w-md flex-col items-center justify-center rounded-xl bg-white p-8 text-center drop-shadow-2xl">
+        {error && <p className="mb-4 text-red-500">{error}</p>}
+        {user ? (
+          <>
+            <h1 className="mb-4 text-3xl font-bold">Welcome, {user.name}</h1>
+            <p className="mb-4 text-lg">Email: {user.email}</p>
+          </>
+        ) : (
+          <>
+            <h1 className="mb-4 text-3xl font-bold">Welcome</h1>
+            <p className="mb-4 text-lg">Please login or register</p>
+            <div className="flex w-full flex-col justify-center gap-2 *:w-full">
+              <a
+                href="/login"
+                className="mr-4 flex items-center justify-center rounded bg-accent px-4 py-2 font-medium text-white hover:bg-blue-700"
+              >
+                Login
+              </a>
+              <a
+                href="/register"
+                className="flex items-center justify-center rounded bg-gray-200 px-4 py-2 font-medium hover:bg-gray-300"
+              >
+                Register
+              </a>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

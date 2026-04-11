@@ -2,38 +2,18 @@ import { Outlet } from "react-router-dom";
 import Header from "./components/ui/Header";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-interface UserData {
-}
-
-export interface AuthContextType {
-  user: UserData | null;
-  setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
-}
+import { useAuth } from "@/AuthContext";
 
 function App() {
-  const [user, setUser] = useState<UserData | null>(null);
-  const [error, setError] = useState("");
+  const { user, setUser, isLoading, error } = useAuth();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-
-      if (token) {
-        try {
-          const res = await axios.get("api/user/me", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setUser(res.data.user);
-        } catch (error) {
-          setError("Failed to fetch user data");
-          localStorage.removeItem("token");
-          console.error(error);
-        }
-      }
-    };
-    fetchUser();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-800">
+        <p className="text-xl text-white">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">
@@ -41,7 +21,7 @@ function App() {
 
       <main>
         {/* This is where your Login or Dashboard pages will render */}
-        <Outlet context={{ user, setUser } satisfies AuthContextType} />
+        <Outlet context={{ user, setUser, error }} />
       </main>
     </div>
   );

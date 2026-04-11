@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
 import type { AuthContextType } from "@/AuthContext";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -13,7 +14,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   if (user) {
-    return <Navigate to="/" replace/>;
+    return <Navigate to="/" replace/>
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -26,25 +27,38 @@ export default function LoginPage() {
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
-      const response = await axios.post("api/user/login", formData);
+      const response = await axios.post("api/user/register", formData);
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
       console.log(response.data.user);
       navigate("/");
     } catch (error: any) {
-      setError(error.response?.data?.message || "Login failed");
+      setError(error.response?.data?.message || "Registration` failed");
     }
   }
 
   return (
     <section className="flex min-h-screen items-center justify-center">
       <div className="container mx-auto flex w-3/4 max-w-md flex-col items-center justify-center rounded-xl bg-white p-8 drop-shadow-2xl">
-        <h1 className="mb-4 text-3xl font-bold">Login</h1>
+        <h1 className="mb-4 text-3xl font-bold">Register</h1>
         {error && <p className="mb-4 text-red-500">{error}</p>}
         <form
           onSubmit={handleSubmit}
           className="flex w-full flex-col justify-center gap-4 *:w-full"
         >
+          <div>
+            <label htmlFor="name">Name</label>
+            <input
+              className="w-full rounded-md border border-gray-500/55 p-3"
+              placeholder="Enter your name"
+              type="text"
+              name="name"
+              onChange={handleChange}
+              value={formData.name}
+              id="name"
+              required
+            />
+          </div>
           <div>
             <label htmlFor="email">Email</label>
             <input
@@ -75,7 +89,7 @@ export default function LoginPage() {
             className="w-full cursor-pointer rounded-md bg-accent p-3 font-medium text-white hover:bg-blue-600"
             type="submit"
           >
-            Login
+            Register
           </button>
         </form>
       </div>
