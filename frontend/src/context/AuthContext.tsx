@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import LoadinScreen from "@/components/pages/LoadingScreen";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -11,11 +12,11 @@ export interface AuthContextType {
   user: UserData | null;
   setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
   isLoading: boolean;
-  error: string;
+  error: string | null;
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [error, setError] = useState<AuthContextType["error"]>("");
+  const [error, setError] = useState<AuthContextType["error"]>(null);
   const [user, setUser] = useState<AuthContextType["user"]>(null);
   const [isLoading, setIsLoading] = useState<AuthContextType["isLoading"]>(true);
 
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, setUser, isLoading, error }}>
-      {children}
+      {isLoading ? <LoadinScreen/> : children}
     </AuthContext.Provider>
   );
 };

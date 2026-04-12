@@ -1,4 +1,4 @@
-import { useAuth } from "@/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
 
 export default function Header() {
@@ -19,7 +19,10 @@ export default function Header() {
           MERN Auth
         </Link>
         {user ? (
-          <button onClick={handleLogout} className="rounded bg-red-500 p-4 py-2 text-white hover:bg-red-600">
+          <button
+            onClick={handleLogout}
+            className="rounded bg-red-500 p-4 py-2 text-white hover:bg-red-600"
+          >
             Logout
           </button>
         ) : (

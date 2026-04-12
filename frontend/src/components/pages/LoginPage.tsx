@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
-import type { AuthContextType } from "@/AuthContext";
+import type { AuthContextType } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -11,10 +11,6 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const { user, setUser } = useOutletContext<AuthContextType>();
   const navigate = useNavigate();
-
-  if (user) {
-    return <Navigate to="/" replace/>;
-  }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setFormData({
