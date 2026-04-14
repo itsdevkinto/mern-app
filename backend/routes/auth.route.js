@@ -1,5 +1,4 @@
 import express from "express";
-import User from "../models/user.model.js";
 import { Register, Login, userHome } from "../controllers/auth.controller.js";
 import authMiddleware from "../middleware/auth.middleware.js";
 

@@ -1,15 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
-import type { AuthContextType } from "@/context/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const { user, setUser } = useOutletContext<AuthContextType>();
+  const { user, setUser, error, setError } = useAuth();
+
   const navigate = useNavigate();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -22,7 +22,7 @@ export default function LoginPage() {
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
-      const response = await axios.post("api/user/login", formData);
+      const response = await axios.post("/api/user/login", formData);
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
       console.log(response.data.user);

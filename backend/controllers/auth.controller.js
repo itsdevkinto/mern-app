@@ -33,7 +33,7 @@ const Register = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ message: "Server burat error", error: error.message });
+      .json({ message: "Server error", error: error.message });
   }
 };
 

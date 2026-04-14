@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App.tsx";
 import Home from "../components/pages/HomePage.tsx";

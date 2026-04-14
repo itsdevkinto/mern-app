@@ -1,7 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/ui/Header";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 
 function App() {

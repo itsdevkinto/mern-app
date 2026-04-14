@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
-import type { AuthContextType } from "@/context/AuthContext";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -9,8 +9,7 @@ export default function RegisterPage() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const { user, setUser } = useOutletContext<AuthContextType>();
+  const { user, setUser, error, setError } = useAuth();
   const navigate = useNavigate();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -23,13 +22,13 @@ export default function RegisterPage() {
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
-      const response = await axios.post("api/user/register", formData);
+      const response = await axios.post("/api/user/register", formData);
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
       console.log(response.data.user);
       navigate("/");
     } catch (error: any) {
-      setError(error.response?.data?.message || "Registration` failed");
+      setError(error.response?.data?.message || "Registration failed");
     }
   }
 
