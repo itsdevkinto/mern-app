@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import LoadinScreen from "@/components/pages/LoadingScreen";
+import { set } from "mongoose";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -18,24 +19,24 @@ export interface AuthContextType {
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState<AuthContextType["error"]>(null);
   const [user, setUser] = useState<AuthContextType["user"]>(null);
-  const [isLoading, setIsLoading] = useState<AuthContextType["isLoading"]>(true);
+  const [isLoading, setIsLoading] =
+    useState<AuthContextType["isLoading"]>(true);
 
   useEffect(() => {
     const fetchUser = async () => {
+      const timer = new Promise((resolve) => setTimeout(resolve, 800));
       const token = localStorage.getItem("token");
-      if (!token) return setIsLoading(false);
-      try {
-        // Start BOTH at the same time
-        const [response] = await Promise.all([
-          axios.get("api/user/me", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          new Promise((res) => setTimeout(res, 800)), // The "Trust" Buffer
-        ]);
 
-        setUser(response.data.user);
-      } catch (e) {
-        localStorage.removeItem("token");
+      try {
+        if (token) {
+          const response = await axios.get("api/user/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setUser(response.data.user);
+        }
+      } catch (error) {
       } finally {
         setIsLoading(false);
       }
@@ -45,7 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, setUser, isLoading, error }}>
-      {isLoading ? <LoadinScreen/> : children}
+      {isLoading ? <LoadinScreen /> : children}
     </AuthContext.Provider>
   );
 };
